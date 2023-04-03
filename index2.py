@@ -4,6 +4,13 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
+import random
+
+# Generar un número entero aleatorio entre 1 y 100
+randomNumber = random.randint(1, 10000)
+
+
+
 # Create a new Chrome webdriver instance
 driver = webdriver.Chrome()
 
@@ -42,7 +49,8 @@ workbook = openpyxl.Workbook()
 
 # Create a new worksheet and populate it with the table data
 worksheet = workbook.active
-worksheet.title = 'Table Data'
+worksheet.title = f'Table Data{randomNumber}'
+print(worksheet.title)
 
 # Initialize row counter
 row_count = 0
@@ -56,7 +64,7 @@ for row_idx, row in enumerate(table.find_elements(By.XPATH, './/tr[@class="dxgvD
     print(f'Cargando {row_count} fila en el excel')
 
 # Save the workbook to an Excel file
-workbook.save('table_data.xlsx')
+workbook.save(f'{randomNumber}_data.xlsx')
 
 # Close the browser window
 driver.quit()
