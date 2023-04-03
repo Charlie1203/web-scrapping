@@ -1,3 +1,4 @@
+import os
 import time
 import openpyxl
 from selenium import webdriver
@@ -6,10 +7,14 @@ from selenium.webdriver.common.keys import Keys
 
 import random
 
+# Get the absolute path of the script's directory
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
 # Generar un número entero aleatorio entre 1 y 100
 randomNumber = random.randint(1, 10000)
 
-
+# Set the absolute path for the Excel file
+excel_path = os.path.join(script_dir, f'{randomNumber}_data.xlsx')
 
 # Create a new Chrome webdriver instance
 driver = webdriver.Chrome()
@@ -63,8 +68,7 @@ for row_idx, row in enumerate(table.find_elements(By.XPATH, './/tr[@class="dxgvD
     row_count += 1
     print(f'Cargando {row_count} fila en el excel')
 
-# Save the workbook to an Excel file
-workbook.save(f'{randomNumber}_data.xlsx')
+workbook.save(f'C:/Users/Usuario/Desktop/web-scrapping/{randomNumber}_data.xlsx')
 
-# Close the browser window
 driver.quit()
+
