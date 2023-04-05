@@ -17,7 +17,9 @@ randomNumber = random.randint(1, 10000)
 excel_path = os.path.join(script_dir, f'{randomNumber}_data.xlsx')
 
 # Create a new Chrome webdriver instance
-driver = webdriver.Chrome()
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument('--headless')
+driver = webdriver.Chrome(options=chrome_options)
 
 # Navigate to the login page
 driver.get('http://gruposm.dyndns.org:3306/SST/Account/Login.aspx')
@@ -68,7 +70,7 @@ for row_idx, row in enumerate(table.find_elements(By.XPATH, './/tr[@class="dxgvD
     row_count += 1
     print(f'Cargando {row_count} fila en el excel')
 
-workbook.save(f'C:/Users/Usuario/Desktop/web-scrapping/{randomNumber}_data.xlsx')
+workbook.save(f'C:/Users/Usuario/Desktop/{randomNumber}_data.xlsx')
 
 driver.quit()
 
