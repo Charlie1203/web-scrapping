@@ -4,19 +4,14 @@ import openpyxl
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-
-import random
+from datetime import datetime
 
 # Get the absolute path of the script's directory
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Generar un número entero aleatorio entre 1 y 100
-randomNumber = random.randint(1, 10000)
 
-# Set the absolute path for the Excel file
-excel_path = os.path.join(script_dir, f'{randomNumber}_data.xlsx')
 
-# Create a new Chrome webdriver instance
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--headless')
 driver = webdriver.Chrome(options=chrome_options)
@@ -47,6 +42,18 @@ driver.get('http://gruposm.dyndns.org:3306/SST/Custodia/CustodiaCargaFinal.aspx'
 # Wait for 10 seconds for the page to load
 time.sleep(2)
 
+
+filtrar = driver.find_element(By.ID, "ctl00_MainPane_Content_rndPanelParametros_chkFiltraFechas_S_D")
+filtrar.click()
+
+time.sleep(5)
+
+buscar = driver.find_element(By.ID, "ctl00_MainPane_Content_rndPanelParametros_cmdBuscar")
+buscar.click()
+
+time.sleep(10)
+
+
 # Find the table element with ID 'ctl00_MainPane_Content_gPendientes_DXMainTable'
 table = driver.find_element(By.ID, 'ctl00_MainPane_Content_gPendientes_DXMainTable')
 
@@ -56,7 +63,8 @@ workbook = openpyxl.Workbook()
 
 # Create a new worksheet and populate it with the table data
 worksheet = workbook.active
-worksheet.title = f'Table Data{randomNumber}'
+now = datetime.now()
+worksheet.title = now.strftime("Table Data %Y-%m-%d %H-%M-%S")
 print(worksheet.title)
 
 # Initialize row counter
@@ -70,7 +78,9 @@ for row_idx, row in enumerate(table.find_elements(By.XPATH, './/tr[@class="dxgvD
     row_count += 1
     print(f'Cargando {row_count} fila en el excel')
 
-workbook.save(f'C:/Users/Usuario/Desktop/{randomNumber}_data.xlsx')
+# Set the absolute path for the Excel file
+excel_path = os.path.join(script_dir, f'{now.strftime("%Y-%m-%d %H-%M-%S")}_data.xlsx')
+workbook.save(excel_path)
 
 driver.quit()
 
